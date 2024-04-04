@@ -1,0 +1,204 @@
+ Q1 Merge two arrays by satisfying given constraints
+Given two sorted arrays X[] and Y[] of size m and n each where m >= n and X[] has exactly n vacant cells,
+ merge elements of Y[] in their correct position in array X[], i.e., merge (X, Y) by keeping the sorted order.
+
+For example,
+
+Input: X[] = { 0, 2, 0, 3, 0, 5, 6, 0, 0 }
+Y[] = { 1, 8, 9, 10, 15 } The vacant cells in X[] is represented by 0 
+Output: X[] = { 1, 2, 3, 5, 6, 8, 9, 10, 15 }
+ solution:- 
+
+public class MergeArrays {
+    public static void merge(int[] X, int m, int[] Y, int n) {
+        int i = m - 1;
+        int j = n - 1;
+        int k = m + n - 1;
+
+        // Merge Y[] into X[] starting from the end
+        while (i >= 0 && j >= 0) {
+            if (X[i] > Y[j]) {
+                X[k] = X[i];
+                i--;
+            } else {
+                X[k] = Y[j];
+                j--;
+            }
+            k--;
+        }
+
+        // If there are remaining elements in Y[], copy them to X[]
+        while (j >= 0) {
+            X[k] = Y[j];
+            j--;
+            k--;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] X = {0, 2, 0, 3, 0, 5, 6, 0, 0};
+        int[] Y = {1, 8, 9, 10, 15};
+
+        merge(X, 6, Y, 5);
+
+        // Print the merged array
+        System.out.print("Merged array: ");
+        for (int num : X) {
+            System.out.print(num + " ");
+        }
+    }
+}
+
+
+output- Merged array: 1 2 3 5 6 8 9 10 15
+
+
+
+
+
+que2-Find maximum sum path involving elements of given arrays
+Given two sorted arrays of integers, find a maximum sum path involving elements of both arrays whose sum is maximum. 
+We can start from either array, but we can switch between arrays only through its common elements.
+
+solution- public class MaximumSumPath {
+    public static int findMaximumSum(int[] X, int[] Y) {
+        int sumX = 0, sumY = 0, maxSum = 0;
+        int i = 0, j = 0;
+
+        while (i < X.length && j < Y.length) {
+            if (X[i] < Y[j]) {
+                sumX += X[i++];
+            } else if (X[i] > Y[j]) {
+                sumY += Y[j++];
+            } else { // When X[i] == Y[j], common element found
+                maxSum += Math.max(sumX, sumY) + X[i];
+                sumX = 0;
+                sumY = 0;
+                i++;
+                j++;
+            }
+        }
+
+        // Add remaining elements of X[]
+        while (i < X.length) {
+            sumX += X[i++];
+        }
+
+        // Add remaining elements of Y[]
+        while (j < Y.length) {
+            sumY += Y[j++];
+        }
+
+        // Add the maximum of remaining sums
+        maxSum += Math.max(sumX, sumY);
+
+        return maxSum;
+    }
+
+    public static void main(String[] args) {
+        int[] X = {3, 6, 7, 8, 10, 12, 15, 18, 100};
+        int[] Y = {1, 2, 3, 5, 7, 9, 10, 11, 15, 16, 18, 25, 50};
+
+        int maxSum = findMaximumSum(X, Y);
+        System.out.println("The maximum sum path is: " + maxSum);
+    }
+}
+
+output- The maximum sum path is: 199
+
+Q.3 Write a Java Program to count the number of words in a string using HashMap.
+
+solution- import java.util.HashMap;
+
+public class WordCount {
+    public static void main(String[] args) {
+        String sentence = "This is a sample sentence to count the number of words in a string";
+
+        // Create a HashMap to store word frequencies
+        HashMap<String, Integer> wordCountMap = new HashMap<>();
+
+        // Split the sentence into words
+        String[] words = sentence.split(" ");
+
+        // Iterate through each word
+        for (String word : words) {
+            // Remove any leading or trailing spaces and convert the word to lowercase
+            word = word.trim().toLowerCase();
+
+            // If the word is already in the map, increment its count by 1
+            // Otherwise, add the word to the map with a count of 1
+            if (wordCountMap.containsKey(word)) {
+                wordCountMap.put(word, wordCountMap.get(word) + 1);
+            } else {
+                wordCountMap.put(word, 1);
+            }
+        }
+
+        // Print the word count map
+        System.out.println("Word Count:");
+        for (String word : wordCountMap.keySet()) {
+            System.out.println(word + ": " + wordCountMap.get(word));
+        }
+    }
+}
+
+output- Word Count:
+sample: 1
+sentence: 1
+string: 1
+a: 1
+is: 1
+to: 1
+count: 1
+number: 1
+the: 1
+in: 1
+This: 1
+words: 1
+of: 1
+
+
+Q4- Write a Java Program to find the duplicate characters in a string.
+
+solution- import java.util.HashMap;
+import java.util.Map;
+
+public class DuplicateCharacters {
+    public static void main(String[] args) {
+        String str = "Hello, World!";
+
+        // Create a HashMap to store character frequencies
+        Map<Character, Integer> charCountMap = new HashMap<>();
+
+        // Convert the string to lowercase to treat uppercase and lowercase characters equally
+        str = str.toLowerCase();
+
+        // Iterate through each character in the string
+        for (char ch : str.toCharArray()) {
+            // Ignore spaces and punctuation marks
+            if (ch != ' ' && !Character.isLetterOrDigit(ch)) {
+                continue;
+            }
+
+            // If the character is already in the map, increment its count by 1
+            // Otherwise, add the character to the map with a count of 1
+            if (charCountMap.containsKey(ch)) {
+                charCountMap.put(ch, charCountMap.get(ch) + 1);
+            } else {
+                charCountMap.put(ch, 1);
+            }
+        }
+
+        // Print duplicate characters
+        System.out.println("Duplicate characters in the string:");
+        for (Map.Entry<Character, Integer> entry : charCountMap.entrySet()) {
+            if (entry.getValue() > 1) {
+                System.out.println(entry.getKey() + ": " + entry.getValue() + " times");
+            }
+        }
+    }
+}
+
+output- Duplicate characters in the string:
+l: 3 times
+o: 2 times
